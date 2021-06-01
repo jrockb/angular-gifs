@@ -16,8 +16,11 @@ export class BusquedaComponent{
 
   buscar(): void{
     const valor = this.txtBuscar.nativeElement.value;
-    this.gifsService.buscarGifs(valor); // llamada al metodo buscar del servicio
-    this.txtBuscar.nativeElement.value = '';
+    if (valor.trim().length > 0){ // validar si el texto a buscar viene vacio
+      this.gifsService.buscarGifs(valor); // llamada al metodo buscar del servicio
+      this.txtBuscar.nativeElement.value = '';
+    }
+
     // document.querySelector('input').value = ''; usando javascript para borrar la caja de texto cuando se realiza la busqueda
 
   }

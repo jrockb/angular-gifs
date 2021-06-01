@@ -12,7 +12,12 @@ export class GifsService {
   }
 
   buscarGifs(query: string): void{
-    this._historial.unshift(query); // inserta el elemento en la primera posición
+    query = query.trim().toLowerCase(); // para que todo se procese en minusculas
+    if (!this._historial.includes(query)){ // metodo que busca si este elemento ya existe en el arreglo
+      this._historial.unshift(query); // inserta el elemento en la primera posición
+    }
+    this._historial = this._historial.splice(0, 10); // corta el arreglo para que tenga 10 elementos
+
     console.log(this._historial);
   }
 
