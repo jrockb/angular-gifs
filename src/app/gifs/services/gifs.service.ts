@@ -19,6 +19,10 @@ export class GifsService {
       this._historial = JSON.parse(localStorage.getItem('historial')!); // ! indica que se obvie el error
       // ya que se ha validado que el objeto no es nulo
     }
+    // this._historial = JSON.parse(localStorage.getItem('historial')!) || []; otra forma de obtener la data del localStorage
+
+    // tslint:disable-next-line: no-non-null-assertion
+    this.resultados = JSON.parse(localStorage.getItem('resultado')!) || []; // recuperar ultima busqueda al recargar el navegador
   }
 
   get historial(): string[]{
@@ -37,6 +41,7 @@ export class GifsService {
     this.http.get<SearchGifsResponse>(`https://api.giphy.com/v1/gifs/search?api_key=EdT0FqLUd3lq10w0eL5z0FIvvAe3fn5u&q=${query}&limit=10`)
       .subscribe( (resp) => {
       this.resultados = resp.data;
+      localStorage.setItem('resultado', JSON.stringify(this.resultados)); // persistir el resultado localmente
       console.log(resp.data);
     }); // el subscribe se ejecuta cuando se tenga la resolución del get
 
