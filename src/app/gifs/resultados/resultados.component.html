@@ -1,5 +1,15 @@
-<ul>
-  <li *ngFor="let gif of resultados">
-    {{gif.title}}
-  </li>
-</ul>
+<div class="row">
+  <div *ngFor="let gif of resultados"
+       class="col-md-4 col-sm-6">  <!--md-4 para pantallas medianas, sm-6 para pantallas pequeñas-->
+    <div class="card">
+      <img [src]="gif.images.downsized_medium.url"
+           [alt]="gif.title"
+           class="card-image-top"> <!--[] indica que angular manejara esas propiedades-->
+      <div class="card-body">
+        <p class="card-text">
+          <!--{{gif.title}}-->
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
