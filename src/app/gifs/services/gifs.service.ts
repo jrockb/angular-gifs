@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SearchGifsResponse, Gif } from '../interfaces/gifs.interface';
 
@@ -8,6 +8,7 @@ import { SearchGifsResponse, Gif } from '../interfaces/gifs.interface';
 export class GifsService {
 
   private apiKey: string = 'EdT0FqLUd3lq10w0eL5z0FIvvAe3fn5u';
+  private servicioUrl: string = 'https://api.giphy.com/v1/gifs';
   private _historial: string[] = [];
 
   public resultados: Gif[] = []; // es publica porque no importa que se modifique fuera de esta clase
@@ -30,6 +31,12 @@ export class GifsService {
   }
 
   buscarGifs(query: string): void{
+
+    const params = new HttpParams()
+          .set('api_key', this.apiKey.trim())
+          .set('q', query)
+          .set('limit', '10');
+
     query = query.trim().toLowerCase(); // para que todo se procese en minusculas
     if (!this._historial.includes(query)){ // metodo que busca si este elemento ya existe en el arreglo
       this._historial.unshift(query); // inserta el elemento en la primera posición
@@ -38,7 +45,7 @@ export class GifsService {
     }
     this._historial = this._historial.splice(0, 10); // corta el arreglo para que tenga 10 elementos
     // el modulo http retorna un observable
-    this.http.get<SearchGifsResponse>(`https://api.giphy.com/v1/gifs/search?api_key=EdT0FqLUd3lq10w0eL5z0FIvvAe3fn5u&q=${query}&limit=10`)
+    this.http.get<SearchGifsResponse>(`${this.servicioUrl}/search`, {params}) // ajuste para construir de mejor manera la url
       .subscribe( (resp) => {
       this.resultados = resp.data;
       localStorage.setItem('resultado', JSON.stringify(this.resultados)); // persistir el resultado localmente
